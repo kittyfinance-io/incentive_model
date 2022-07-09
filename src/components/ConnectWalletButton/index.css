@@ -1,0 +1,47 @@
+.web3modal-modal-card {
+  display: flex !important;
+  flex-direction: column !important;
+  max-width: 556px !important;
+  padding: 40px !important;
+}
+
+.web3modal-provider-wrapper {
+  margin-bottom: 16px !important;
+  width: auto !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.web3modal-provider-wrapper:last-child {
+  margin-bottom: 0 !important;
+}
+
+.web3modal-provider-description {
+  display: none !important;
+}
+
+.web3modal-provider-container {
+  flex-direction: row-reverse !important;
+  justify-content: space-between !important;
+  background-color: #2c2c2c !important;
+  border-radius: 10px !important;
+  padding: 16px 24px !important;
+  align-items: center !important;
+}
+
+.web3modal-provider-name {
+  width: auto !important;
+  font-size: 18px !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+  margin-top: 0 !important;
+}
+
+.web3modal-provider-icon {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
