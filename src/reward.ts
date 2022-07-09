@@ -298,35 +298,25 @@ export const get_roi = (
     avax_added = 0,
     pol_increase = 0
   ) {
+    
     if (avax_added > 0) {
       // buy
 
-      // let half_pool_dollar_value =
-      //   (e.p1_liq_in_dollar * (1 - e.p1_pol_ratio)) / 2;
-
-      // // account for POL splitting before buys to calc price appreciation
-      // let lion_in_pool = half_pool_dollar_value / e.lion_price_in_dollar;
-      // let avax_in_pool = half_pool_dollar_value / e.avax_price_in_dollar;
-
-      // // new avax reserves / new lion reserves
-      // let new_price =
-      //   (avax_in_pool + avax_added) /
-      //   ((lion_in_pool * avax_in_pool) / (avax_in_pool + avax_added));
-      // return new_price / (avax_in_pool / lion_in_pool);
-
       let half_pool_dollar_value = (e.p1_liq_in_dollar + pol_increase) / 2;
 
+      // account for POL splitting before buys to calc price appreciation
       let lion_in_pool = half_pool_dollar_value / e.lion_price_in_dollar;
       let avax_in_pool = half_pool_dollar_value / e.avax_price_in_dollar;
 
+      // new avax reserves / new lion reserves
       let new_price =
-        (avax_in_pool * lion_in_pool) /
-        (lion_in_pool + lion_added) /
-        (lion_in_pool + lion_added);
+        (avax_in_pool + avax_added) /
+        ((lion_in_pool * avax_in_pool) / (avax_in_pool + avax_added));
       return new_price / (avax_in_pool / lion_in_pool);
     }
 
     if (lion_added > 0) {
+
       // sell
 
       let half_pool_dollar_value = (e.p1_liq_in_dollar + pol_increase) / 2;
