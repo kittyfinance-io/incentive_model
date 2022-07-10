@@ -576,7 +576,7 @@ export const get_roi = (
       `Net price appreciation of Lion in LP: ${net_price_appreciation_of_lion / 2}$`);
 
     // appreciated lion + stable avax part
-    let virtual_new_lp_value = (net_price_appreciation_of_lion / 2) + (investment_sum/2);
+    let virtual_new_lp_value = (net_price_appreciation_of_lion / 2) + investment_sum;
     console.log(`Virtual new LP value: ${virtual_new_lp_value}$`);
 
     let il_factor =
