@@ -632,45 +632,56 @@ export const get_roi = (
 
     console.log(`LP staking rewards: ${lp_staking_rewards}$`);
 
-    // NOTE disregarding potential share price appreciation for now
-    console.log(`Net price appreciation of Lion in LP: ${net_price_appreciation_of_lion / 2}$`);
+    let share_price_appreciation = price_appreciation_of_shares_in_percent * investment_sum / 2;
+    let lion_price_appreciation = net_price_appreciation_of_lion / 2;
 
-    // appreciated lion
-    let virtual_new_lp_value = 
-      (net_price_appreciation_of_lion / 2) + 
-      (investment_sum/2 * (1+price_appreciation_of_shares_in_percent));
+    console.log(`  Net price appreciation of Lion in LP: ${lion_price_appreciation}$`);
+    console.log(`Net price appreciation of Shares in LP: ${share_price_appreciation}$`);
+
+    // --- appreciated lion
+    let virtual_new_lp_value = (net_price_appreciation_of_lion / 2) + investment_sum;
     console.log(`Virtual new LP value: ${virtual_new_lp_value}$`);
 
-    // no idea if this approach accurately calculates delta for IL with 2 assets changing value but should be close enough
-    let il_delta = Math.abs(virtual_relative_price_appreciation_of_lion - price_appreciation_of_shares_in_percent);
+    let il_delta = virtual_relative_price_appreciation_of_lion;
     let il_factor = (2 * (1 + il_delta) ** 0.5) / (2 + il_delta);
     console.log(`IL factor: ${il_factor}$`);
 
     let net_lp_value = virtual_new_lp_value * il_factor;
     console.log(`Net LP value: ${net_lp_value}$`);
 
+    // --- appreciated shares
+    virtual_new_lp_value = 
+      (net_lp_value / 2) +
+      (net_lp_value / 2 * (1+price_appreciation_of_shares_in_percent));
+    console.log(`Virtual new LP value: ${virtual_new_lp_value}$`);
+
+    il_delta = price_appreciation_of_shares_in_percent;
+    il_factor = (2 * (1 + il_delta) ** 0.5) / (2 + il_delta);
+    console.log(`IL factor: ${il_factor}$`);
+
+    net_lp_value = virtual_new_lp_value * il_factor;
+    console.log(`Net LP value: ${net_lp_value}$`);
+
+    // ---
+
     let net_lp_price_appreciation_gains = (net_lp_value * new_peg_fee_factor) - investment_sum;
     console.log(`Net LP price appreciation gains: ${net_lp_price_appreciation_gains}$`);
 
     let getRoi: any = get_roi(investment_sum / 2, e, p, "stake shares");
-
     let share_staking_rewards = (investment_sum / 2) * getRoi["roi"];
-
     console.log(`Share staking rewards: ${share_staking_rewards}$`);
 
     console.log(
-      `===================================== ROI: ${(lp_staking_rewards +
-        net_lp_price_appreciation_gains +
-        share_staking_rewards) /
-      investment_sum
+      `===================================== ROI: ${
+        (lp_staking_rewards + net_lp_price_appreciation_gains + share_staking_rewards) / investment_sum
       } ====================================`
     );
 
     return {
       mode: mode,
       roi: (lp_staking_rewards + net_lp_price_appreciation_gains + share_staking_rewards) / investment_sum,
-      price_appreciation_lion: net_lp_price_appreciation_gains/2,
-      price_appreciation_shares: net_lp_price_appreciation_gains/2,
+      price_appreciation_lion: lion_price_appreciation * new_peg_fee_factor,
+      price_appreciation_shares: share_price_appreciation * new_peg_fee_factor,
       lion_staking_rewards: 0,
       share_staking_rewards: share_staking_rewards,
       LP_staking_rewards: lp_staking_rewards,
