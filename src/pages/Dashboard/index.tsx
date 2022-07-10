@@ -43,6 +43,7 @@ const Dashboard = () => {
 
     buying_volume: 500000,
     selling_volume: 250000,
+    prev_volume: 0,
 
     p1_liq_in_dollar: (pre_launch_avax_kitty / 4) * 2 * 30,
     p1_pol_ratio: 0.1,
@@ -77,16 +78,14 @@ const Dashboard = () => {
           stateProtocolParams.p3_vs_l3_reward_ratio, // p3 vs l3 reward ratio,
           stateProtocolParams.reemission_timeframe // reemission timeframe of burned peg contributions in days
         );
-        // console.log(
-        //   "stateEnvInputs.lion_staking_pool_size_in_tokens",
-        //   stateEnvInputs
-        // );
+
         const envInputs = new EnvInputs(
           stateEnvInputs.avax_price_in_dollar, // avax price
           stateEnvInputs.lion_price_in_dollar, // lion avax price
           110000 / (100 * protocolParams.protocol_tax_public_vs_dao_ratio), // lion share price
           stateEnvInputs.buying_volume, // buying vol
           stateEnvInputs.selling_volume, // selling vol
+          stateEnvInputs.prev_volume,
 
           stateEnvInputs.p1_liq_in_dollar, // p1 liquidity
           stateEnvInputs.p1_pol_ratio, // pol ratio p1
@@ -264,7 +263,7 @@ const Dashboard = () => {
           {Object.keys(stateProtocolParams).map((item, index) => (
             <InputSlider
               key={index}
-              name={item}
+              name={item.replaceAll("_", " ")}
               value={stateProtocolParams[item as keyof IProtocol]}
               maxValue={MaxInput[item as keyof IProtocol]}
               minValue={MinInput[item as keyof IProtocol]}
@@ -286,7 +285,7 @@ const Dashboard = () => {
           </Typography>
 
           <Grid container columnSpacing={5}>
-            <Grid item xs={12} md={6}>
+            {/* <Grid item xs={12} md={6}>
               <InputSlider
                 name="Invest Money"
                 value={investAmount}
@@ -294,19 +293,11 @@ const Dashboard = () => {
                 unitValue={"$"}
                 setValue={(value) => setInvestAmount(value)}
               />
-            </Grid>
-            {/* <Grid item xs={12} md={6}>
-                <InputSlider
-                  name="Pre Launch AVAX-Kitty"
-                  value={pre_launch_avax_kitty}
-                  maxValue={100000}
-                  setValue={(value) => setPre_launch_avax_kitty(value)}
-                />
-              </Grid> */}
+            </Grid> */}
             {Object.keys(stateEnvInputs).map((item, index) => (
               <Grid item xs={12} md={6}>
                 <InputSlider
-                  name={item}
+                  name={item.replaceAll("_", " ")}
                   key={index}
                   value={stateEnvInputs[item as keyof IEnvInputs]}
                   maxValue={MaxInput[item as keyof IEnvInputs]}

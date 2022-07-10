@@ -1,25 +1,28 @@
+const precent_increment = 0.01;
+
 export const StepInput = {
-  protocol_tax: 0.001,
-  peg_tax_re_mint_rate: 0.001,
-  protocol_tax_public_vs_dao_ratio: 0.001,
-  supply_expansion_rate: 0.001,
-  marketing_cut: 0.001,
-  team_cut: 0.001,
-  early_withdrawal_tax: 0.001,
-  p1_vs_p3_supply_expansion: 0.001,
-  p1_vs_l1_reward_ratio: 0.001,
-  p3_vs_l3_reward_ratio: 0.001,
+  protocol_tax: precent_increment,
+  peg_tax_re_mint_rate: precent_increment,
+  protocol_tax_public_vs_dao_ratio: precent_increment,
+  supply_expansion_rate: precent_increment,
+  marketing_cut: precent_increment,
+  team_cut: precent_increment,
+  early_withdrawal_tax: precent_increment,
+  p1_vs_p3_supply_expansion: precent_increment,
+  p1_vs_l1_reward_ratio: precent_increment,
+  p3_vs_l3_reward_ratio: precent_increment,
   reemission_timeframe: 1,
 
-  avax_price_in_dollar: 0.001,
-  lion_price_in_dollar: 0.001, // ** Lion Price
-  share_price_in_dollar: 0.001,
+  avax_price_in_dollar: precent_increment,
+  lion_price_in_dollar: precent_increment, // ** Lion Price
+  share_price_in_dollar: precent_increment,
 
-  buying_volume: 1000,
-  selling_volume: 1000,
+  buying_volume: 10000,
+  selling_volume: 10000,
+  prev_volume: 10000,
 
   p1_liq_in_dollar: 1000,
-  p1_pol_ratio: 0.001,
+  p1_pol_ratio: precent_increment,
   p3_liq_in_dollar: 1000,
 
   lion_staking_pool_size_in_tokens: 1,
@@ -27,11 +30,11 @@ export const StepInput = {
   p3_staked_in_dollar: 1000,
   p1_locked_in_dollar: 1000,
   p3_locked_in_dollar: 1000,
-  total_share_supply: 0.001,
+  total_share_supply: precent_increment,
 
   pending_liq_contrib_rewards: 1,
   timeframe: 1, // in days
-  early_withdrawal_rate: 0.001,
+  early_withdrawal_rate: precent_increment,
 };
 
 export const MaxInput = {
@@ -51,8 +54,9 @@ export const MaxInput = {
   lion_price_in_dollar: 1000, // ** Lion Price
   share_price_in_dollar: 200000,
 
-  buying_volume: 1000000,
-  selling_volume: 1000000,
+  buying_volume: 10000000,
+  selling_volume: 10000000,
+  prev_volume: 10000000,
 
   p1_liq_in_dollar: 2000000,
   p1_pol_ratio: 1,
@@ -87,8 +91,9 @@ export const MinInput = {
   lion_price_in_dollar: 0, // ** Lion Price
   share_price_in_dollar: 0,
 
-  buying_volume: 1000,
-  selling_volume: 1000,
+  buying_volume: 0,
+  selling_volume: 0,
+  prev_volume: 0,
 
   p1_liq_in_dollar: 1000,
   p1_pol_ratio: 0,
@@ -101,7 +106,7 @@ export const MinInput = {
   p3_locked_in_dollar: 1000,
   total_share_supply: 1,
 
-  pending_liq_contrib_rewards: 1,
+  pending_liq_contrib_rewards: 0,
   timeframe: 1, // in days
   early_withdrawal_rate: 0,
 };
@@ -117,7 +122,7 @@ export const UnitInput = {
   p1_vs_p3_supply_expansion: "%",
   p1_vs_l1_reward_ratio: "%",
   p3_vs_l3_reward_ratio: "%",
-  reemission_timeframe: "day",
+  reemission_timeframe: "days",
 
   avax_price_in_dollar: "$",
   lion_price_in_dollar: "$", // ** Lion Price
@@ -125,6 +130,7 @@ export const UnitInput = {
 
   buying_volume: "$",
   selling_volume: "$",
+  prev_volume: "$",
 
   p1_liq_in_dollar: "$",
   p1_pol_ratio: "%",
@@ -138,6 +144,6 @@ export const UnitInput = {
   total_share_supply: "$",
 
   pending_liq_contrib_rewards: "$",
-  timeframe: "day", // in days
+  timeframe: "days", // in days
   early_withdrawal_rate: "%",
 };

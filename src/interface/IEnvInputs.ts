@@ -5,6 +5,7 @@ export interface IEnvInputs {
 
   buying_volume: number;
   selling_volume: number;
+  prev_volume: number;
 
   p1_liq_in_dollar: number;
   p1_pol_ratio: number;
