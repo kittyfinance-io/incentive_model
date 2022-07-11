@@ -353,10 +353,10 @@ export const get_roi = (
 
   let supply_expansion_factor = 1;
 
-  let virtual_relative_price_appreciation_of_lion;
+  let virtual_relative_price_appreciation_of_lion: number;
   let new_peg;
-  let new_peg_fee_factor;
-  let new_lion_price;
+  let new_peg_fee_factor: number;
+  let new_lion_price: number;
   let net_price_appreciation_of_lion;
   if (use_virtual) {
     supply_expansion_factor = 1 / relative_supply_expansion;
@@ -428,6 +428,32 @@ export const get_roi = (
     );
   }
 
+  function getILFactor(p: number) {
+     return (2 * (1 + p) ** 0.5) / (2 + p)
+  }
+
+  function prepResEnv() {
+    let resulting_env = {...e};
+    resulting_env.lion_price_in_dollar = new_lion_price;
+    resulting_env.share_price_in_dollar = e.share_price_in_dollar * (1 + price_appreciation_of_shares_in_percent);
+    resulting_env.prev_volume = e.buying_volume + e.selling_volume;
+    
+    resulting_env.p1_liq_in_dollar = 
+      ((e.p1_liq_in_dollar / 2 * virtual_relative_price_appreciation_of_lion) + (e.p1_liq_in_dollar/2)) * 
+      getILFactor(virtual_relative_price_appreciation_of_lion);
+    resulting_env.p1_staked_in_dollar = resulting_env.p1_liq_in_dollar / 2;
+    resulting_env.p1_locked_in_dollar = resulting_env.p1_liq_in_dollar / 2;
+
+    resulting_env.p3_liq_in_dollar =
+      ((e.p3_liq_in_dollar / 2 * virtual_relative_price_appreciation_of_lion) + (e.p3_liq_in_dollar/2)) * 
+      getILFactor(virtual_relative_price_appreciation_of_lion) * (1 + (price_appreciation_of_shares_in_percent / 2)) *
+      getILFactor(price_appreciation_of_lion_in_percent);
+    resulting_env.p3_staked_in_dollar = resulting_env.p1_liq_in_dollar / 2;
+    resulting_env.p3_locked_in_dollar = resulting_env.p3_liq_in_dollar / 2;
+
+    return resulting_env;
+  }
+
   if (mode === "stake lion") {
 
     // buy lion
@@ -464,6 +490,10 @@ export const get_roi = (
       investment_sum
       } ====================================`
     );
+    
+    let resulting_env = prepResEnv();
+
+    resulting_env.lion_staking_pool_size_in_tokens += user_lion_amount;
 
     return {
       mode: mode,
@@ -474,7 +504,9 @@ export const get_roi = (
       share_staking_rewards: 0,
       LP_staking_rewards: 0,
       early_withdrawal_fees: 0,
+      resulting_env: resulting_env,
     };
+
   }
 
   if (mode === "stake shares") {
@@ -517,6 +549,8 @@ export const get_roi = (
       } ====================================`
     );
 
+    let resulting_env = prepResEnv();
+
     return {
       mode: mode,
       roi: (share_staking_rewards + price_appreciation_rewards) / investment_sum,
@@ -526,6 +560,7 @@ export const get_roi = (
       share_staking_rewards: share_staking_rewards,
       LP_staking_rewards: 0,
       early_withdrawal_fees: 0,
+      resulting_env: resulting_env,
     };
   }
 
@@ -572,16 +607,13 @@ export const get_roi = (
       `Rewards from P1 staking in $ worth of Lion: ${lp_staking_rewards}$`
     );
 
-    console.log(
-      `Net price appreciation of Lion in LP: ${net_price_appreciation_of_lion / 2}$`);
+    console.log(`Net price appreciation of Lion in LP: ${net_price_appreciation_of_lion / 2}$`);
 
     // appreciated lion + stable avax part
     let virtual_new_lp_value = (net_price_appreciation_of_lion / 2) + investment_sum;
     console.log(`Virtual new LP value: ${virtual_new_lp_value}$`);
 
-    let il_factor =
-      (2 * (1 + virtual_relative_price_appreciation_of_lion) ** 0.5) /
-      (2 + virtual_relative_price_appreciation_of_lion);
+    let il_factor = getILFactor(virtual_relative_price_appreciation_of_lion);
     console.log(`IL factor: ${il_factor}$`);
 
     let net_lp_value = virtual_new_lp_value * il_factor;
@@ -597,6 +629,9 @@ export const get_roi = (
       `===================================== ROI: ${(lp_staking_rewards + net_lp_price_appreciation_gains) / investment_sum
       } ====================================`
     );
+
+    let resulting_env = prepResEnv();
+
     return {
       mode: mode,
       roi: (lp_staking_rewards + net_lp_price_appreciation_gains) / investment_sum,
@@ -606,6 +641,7 @@ export const get_roi = (
       share_staking_rewards: 0,
       LP_staking_rewards: lp_staking_rewards,
       early_withdrawal_fees: 0,
+      resulting_env: resulting_env,
     };
   }
 
@@ -677,6 +713,8 @@ export const get_roi = (
       } ====================================`
     );
 
+    let resulting_env = prepResEnv()
+
     return {
       mode: mode,
       roi: (lp_staking_rewards + net_lp_price_appreciation_gains + share_staking_rewards) / investment_sum,
@@ -686,6 +724,7 @@ export const get_roi = (
       share_staking_rewards: share_staking_rewards,
       LP_staking_rewards: lp_staking_rewards,
       early_withdrawal_fees: 0,
+      resulting_env: resulting_env,
     };
   }
 
@@ -729,6 +768,9 @@ export const get_roi = (
       `===================================== ROI: ${lp_staking_rewards / investment_sum - 1
       } ====================================`
     );
+
+    let resulting_env = prepResEnv();
+
     return {
       mode: mode,
       roi: lp_staking_rewards / investment_sum - 1,
@@ -737,8 +779,8 @@ export const get_roi = (
       lion_staking_rewards: 0,
       share_staking_rewards: 0,
       LP_staking_rewards: vanilla_rewards * share_of_p1_locks * new_lion_price,
-      early_withdrawal_fees:
-        early_withdrawal_fees * new_lion_price * share_of_p1_locks,
+      early_withdrawal_fees: early_withdrawal_fees * new_lion_price * share_of_p1_locks,
+      resulting_env: resulting_env,
     };
   }
 
@@ -788,6 +830,9 @@ export const get_roi = (
       `===================================== ROI: ${(lp_staking_rewards + net_share_staking_rewards) / investment_sum - 1
       } ====================================`
     );
+
+    let resulting_env = prepResEnv();
+
     return {
       mode: mode,
       roi:
@@ -797,8 +842,8 @@ export const get_roi = (
       lion_staking_rewards: 0,
       share_staking_rewards: net_share_staking_rewards,
       LP_staking_rewards: vanilla_rewards * share_of_p3_locks * new_lion_price,
-      early_withdrawal_fees:
-        early_withdrawal_fees * new_lion_price * share_of_p3_locks,
+      early_withdrawal_fees: early_withdrawal_fees * new_lion_price * share_of_p3_locks,
+      resulting_env: resulting_env,
     };
   }
 
