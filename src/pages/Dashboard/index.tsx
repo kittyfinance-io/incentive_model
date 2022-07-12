@@ -224,7 +224,7 @@ const Dashboard = () => {
       false
     );
 
-    console.log(newRoi?.resulting_env);
+    console.log("mode", mode, "\nnew roi", newRoi);
 
     let resulting_env: IEnvInputs | undefined = newRoi?.resulting_env;
 
