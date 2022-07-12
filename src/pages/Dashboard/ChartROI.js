@@ -23,6 +23,10 @@ const modifyOilDomain = (domain) => {
   return [domain[0], domain[1]];
 };
 
+const onClickCallback = (targetData) => {
+  console.log(targetData);
+};
+
 const ChartROI = ({ chartData }) => {
   return (
     <Chart data={chartData}>
@@ -80,7 +84,7 @@ const ChartROI = ({ chartData }) => {
         argumentField="strategy"
         scaleName="ROI"
       />
-      <EventTracker />
+      <EventTracker onClick={onClickCallback} />
       <Tooltip />
       <Stack
         stacks={[
