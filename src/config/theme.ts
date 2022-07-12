@@ -1,13 +1,16 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 let theme = createTheme({
-  // palette: {
-  //   mode: "light",
-  //   text: {
-  //     primary: "black",
-  //     // secondary: "#C7B774",
-  //   },
-  // },
+  palette: {
+    // mode: "dark",
+    // text: {
+    //   primary: "#ffffff",
+    // },
+    mode: "light",
+    text: {
+      primary: "#000000",
+    },
+  },
   components: {
     MuiCard: {
       styleOverrides: {

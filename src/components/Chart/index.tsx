@@ -1,11 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { ResponsiveBar } from "@nivo/bar";
 
+const theme = {
+  background: "#000000",
+  textColor: "#ffffff",
+  axis: {
+    ticks: {
+      text: {
+        fill: "#ffffff"
+      }
+    },
+    legend: {
+      text: {
+        fill: "#ffffff"
+      }
+    }
+  }
+};
+
 const ChartStrategyBar = (data: any) => {
   // console.log("data", data.data);
   return (
     <ResponsiveBar
       data={data.data}
+      theme={theme}
       keys={[
         "price_appreciation_lion",
         "price_appreciation_shares",
@@ -19,7 +37,7 @@ const ChartStrategyBar = (data: any) => {
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={{ scheme: "nivo" }}
+      //colors={{ scheme: "nivo" }}
       defs={[
         {
           id: "dots",
@@ -78,10 +96,6 @@ const ChartStrategyBar = (data: any) => {
       }}
       labelSkipWidth={12}
       labelSkipHeight={12}
-      labelTextColor={{
-        from: "color",
-        modifiers: [["darker", 1.6]],
-      }}
       legends={[
         {
           dataFrom: "keys",
@@ -115,12 +129,11 @@ const ChartStrategyBar = (data: any) => {
   );
 };
 
-
-
 const ChartSumBar = (data: any) => {
   console.log("data", data.data);
   return (
     <ResponsiveBar
+      theme={theme}
       data={data.data}
       keys={[
         "stake lion",
@@ -136,7 +149,7 @@ const ChartSumBar = (data: any) => {
       layout="horizontal"
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={{ scheme: "nivo" }}
+      //colors={{ scheme: "nivo" }}
       defs={[
         {
           id: "dots",
@@ -195,10 +208,6 @@ const ChartSumBar = (data: any) => {
       }}
       labelSkipWidth={12}
       labelSkipHeight={12}
-      labelTextColor={{
-        from: "color",
-        modifiers: [["darker", 1.6]],
-      }}
       legends={[
         {
           dataFrom: "keys",
