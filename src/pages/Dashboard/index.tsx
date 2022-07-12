@@ -217,7 +217,7 @@ const Dashboard = () => {
   const encodeQuery = (mode: string) => {
     // get_roi
     let newRoi = get_roi(
-      1000,
+      investAmount,
       IEnv2Env(stateEnvInputs, stateProtocolParams),
       IProt2Prot(stateProtocolParams),
       mode,
