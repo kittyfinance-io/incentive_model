@@ -214,15 +214,17 @@ const Dashboard = () => {
   }, [searchParams]);
   console.log("stateEnvInputs", stateEnvInputs);
 
-  const encodeQuery = (mode: string) => {
+  const encodeQuery = (mode?: string) => {
     // get_roi
-    let newRoi = get_roi(
-      investAmount,
-      IEnv2Env(stateEnvInputs, stateProtocolParams),
-      IProt2Prot(stateProtocolParams),
-      mode,
-      false
-    );
+    let newRoi = mode
+      ? get_roi(
+          investAmount,
+          IEnv2Env(stateEnvInputs, stateProtocolParams),
+          IProt2Prot(stateProtocolParams),
+          mode,
+          false
+        )
+      : null;
 
     console.log("mode", mode, "\nnew roi", newRoi);
 
@@ -270,13 +272,13 @@ const Dashboard = () => {
         }}
       >
         <Paper sx={{ px: 5 }}>
-          {/* <Button
+          <Button
             variant="contained"
             sx={{ ml: 3, mt: 3 }}
             onClick={() => encodeQuery()}
           >
             Encode Query
-          </Button> */}
+          </Button>
           <ChartROI chartData={chartData} />
         </Paper>
       </Box>
